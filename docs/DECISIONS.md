@@ -23,7 +23,7 @@
 
 ## Implementation
 - Monetary domain values are represented as integer cents. Deterministic domain functions, not UI or AI, calculate financial values.
-- The initial UI uses a replaceable repository adapter. It deliberately shows only deterministic zero/unknown data until a configured database provides imported history; it does not invent financial amounts.
+- The initial UI uses a replaceable repository adapter. It deliberately shows unknown rather than zero until a configured database provides imported history and bank-balance inputs; it does not invent financial amounts.
 
 ## Context break
 - Current Florida-home financial context begins July 2026.

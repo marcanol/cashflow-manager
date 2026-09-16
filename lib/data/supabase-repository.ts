@@ -1,15 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
-import { calculateSafeToSpend } from "../domain/cashflow";
 
 type OccurrenceRow = { id: string; period: string; expected_amount_cents: number | null; confirmed_amount_cents: number | null; due_date: string | null; obligations: { name: string }[] | null };
 type PaycheckRow = { expected_date: string; expected_amount_cents: number };
 
 export type TodaySnapshot = {
-  state: "UNAVAILABLE" | "READY";
+  state: "UNAVAILABLE" | "PARTIAL";
   reason?: string;
-  safeToSpendCents?: number;
-  availableCashCents?: number;
-  reservedCents?: number;
   nextPaycheck?: { date: string; amountCents: number } | null;
   upcoming: { id: string; name: string; dueDate: string; amountCents: number }[];
 };
@@ -34,12 +30,12 @@ export async function getTodaySnapshotFromDatabase(asOf = "2026-09-01"): Promise
   if (occurrenceError || paycheckError) return { state: "UNAVAILABLE", reason: occurrenceError?.message ?? paycheckError?.message, upcoming: [] };
   const upcoming = ((occurrences ?? []) as OccurrenceRow[]).map((row) => ({ id: row.id, name: row.obligations?.[0]?.name ?? "Unresolved import row", dueDate: row.due_date ?? row.period, amountCents: row.confirmed_amount_cents ?? row.expected_amount_cents ?? 0 }));
   const next = (paychecks ?? []) as PaycheckRow[];
-  // Bank available balance/reserves are intentionally unavailable at Checkpoint 0.
-  return { state: "READY", availableCashCents: 0, reservedCents: 0, safeToSpendCents: calculateSafeToSpend({ availableCashCents: 0, pendingTransactionCents: 0, reservedObligationCents: 0, protectedAllocationCents: 0, requiredBillsBeforeIncomeCents: 0, safetyBufferCents: 0 }), nextPaycheck: next[0] ? { date: next[0].expected_date, amountCents: next[0].expected_amount_cents } : null, upcoming };
+  // Bank balances/reserves have no source in Checkpoint 0; never substitute zero for unknown money.
+  return { state: "PARTIAL", reason: "Imported obligations are available. Safe-to-Spend remains unavailable until bank balances and reserves are modeled.", nextPaycheck: next[0] ? { date: next[0].expected_date, amountCents: next[0].expected_amount_cents } : null, upcoming };
 }
 
 export async function getPlanSnapshotFromDatabase(period = "2026-09-01") {
   const today = await getTodaySnapshotFromDatabase(period);
   if (today.state === "UNAVAILABLE") return { state: today.state, reason: today.reason, period: "September 2026", events: [] as { id: string; date: string; kind: string; amountCents: number }[] };
-  return { state: "READY" as const, period: "September 2026", events: today.upcoming.map((item) => ({ id: item.id, date: item.dueDate, kind: item.name, amountCents: -item.amountCents })) };
+  return { state: "PARTIAL" as const, reason: today.reason, period: "September 2026", events: today.upcoming.map((item) => ({ id: item.id, date: item.dueDate, kind: item.name, amountCents: -item.amountCents })) };
 }
