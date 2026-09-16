@@ -19,6 +19,11 @@
 - Ignore templates, Info, Money, and other non-month/year tabs.
 - Preserve source rows/provenance even when normalized.
 - Do not silently merge fuzzy aliases.
+- Checkpoint 0 imports are rehearsable without a database: the importer produces raw rows and review-required normalization proposals. With a configured Supabase service role it persists a tracked import run, raw provenance, and proposals; source files and credentials remain outside Git.
+
+## Implementation
+- Monetary domain values are represented as integer cents. Deterministic domain functions, not UI or AI, calculate financial values.
+- The initial UI uses a replaceable repository adapter. It deliberately shows only deterministic zero/unknown data until a configured database provides imported history; it does not invent financial amounts.
 
 ## Context break
 - Current Florida-home financial context begins July 2026.
