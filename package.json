@@ -1,0 +1,45 @@
+{
+  "name": "cashflow-manager",
+  "version": "1.0.0",
+  "description": "A minimal, Xero-inspired household cash-flow control system focused on: - forward-looking cash availability - paycheck-aware bill planning - reserve management - payment timing optimization - bank reconciliation - statement ingestion - eventual analytics + AI",
+  "private": true,
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "import:workbook": "tsx scripts/import-workbook.ts",
+    "import:supabase": "tsx scripts/import-to-supabase.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcanol/cashflow-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/marcanol/cashflow-manager/issues"
+  },
+  "homepage": "https://github.com/marcanol/cashflow-manager#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "next": "^16.1.6",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
+  }
+}
