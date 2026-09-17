@@ -30,10 +30,15 @@
 - Omit fully empty formatted rows, but preserve each retained row's original worksheet row number and A:V source range.
 - Do not silently merge fuzzy aliases.
 - Checkpoint 0 imports are rehearsable without a database: the importer produces raw rows and review-required normalization proposals. With a configured Supabase service role it persists a tracked import run, raw provenance, and proposals; source files and credentials remain outside Git.
+- Historical persistence is one database transaction. A completed workbook import is idempotent by household plus exact source SHA-256; a repeated identical payload returns the existing run, while an error rolls back its run, raw rows, and proposals together.
+- Generated SQL import payloads contain private financial data, must be written outside the repository, and are ignored by the repository's `*.import.sql` guard. The committed generator and migration contain no real financial source data.
+- Pending historical normalization proposals may appear in Checkpoint 0 Today/Plan as explicitly review-required source evidence. They remain independent, never create canonical obligations, and are suppressed only when a normalized occurrence links to that exact raw row.
+- Spreadsheet money and due-date text is parsed by conservative deterministic functions. Unsupported, malformed, negative obligation, or ambiguous values remain unknown rather than becoming zero or an inferred date.
 
 ## Implementation
 - Monetary domain values are represented as integer cents. Deterministic domain functions, not UI or AI, calculate financial values.
 - The initial UI uses a replaceable repository adapter. It deliberately shows unknown rather than zero until a configured database provides imported history and bank-balance inputs; it does not invent financial amounts.
+- Cashflow Manager reserves `localhost:3001` for both local Next.js development and local production-mode verification because Attendly owns `localhost:3000`. The corresponding local Supabase Auth callback is `http://localhost:3001/auth/callback`.
 
 ## Context break
 - Current Florida-home financial context begins July 2026.
