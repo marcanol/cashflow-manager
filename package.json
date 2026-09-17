@@ -7,13 +7,14 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1 -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 127.0.0.1 -p 3001",
     "test": "vitest run",
     "test:watch": "vitest",
     "import:workbook": "node --import tsx scripts/import-workbook.ts",
-    "import:supabase": "node --import tsx scripts/import-to-supabase.ts"
+    "import:supabase": "node --import tsx scripts/import-to-supabase.ts",
+    "import:sql": "node --import tsx scripts/generate-import-sql.ts"
   },
   "repository": {
     "type": "git",
