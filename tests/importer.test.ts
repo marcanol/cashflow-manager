@@ -48,18 +48,19 @@ describe("historical workbook importer", () => {
     const rawRows = extractRawRows(workbook, "synthetic.xlsx");
     expect(rawRows.map((row) => row.sourceRow)).toEqual([1, 3]);
   });
-  it("tags July and September source periods as Florida context", () => {
+  it("tags May onward as Florida context", () => {
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([["Georgia bill"]]), "June 2026");
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([["Florida bill"]]), "July 2026");
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([["Georgia bill"]]), "April 2026");
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([["Florida bill"]]), "May 2026");
+    XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([["Florida bill"]]), "June 2026");
     XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet([["September bill"]]), "September 2026");
     expect(extractRawRows(workbook, "contexts.xlsx").map((row) => [row.period, row.contextKey])).toEqual([
-      ["2026-06-01", "georgia-home"], ["2026-07-01", "florida-home"], ["2026-09-01", "florida-home"],
+      ["2026-04-01", "georgia-home"], ["2026-05-01", "florida-home"], ["2026-06-01", "florida-home"], ["2026-09-01", "florida-home"],
     ]);
   });
   it("does not silently merge distinct source labels", () => {
     const proposals = proposeNormalization([
-      { sourceWorkbook: "x", sourceSheet: "June 2026", sourceRow: 2, sourceRange: "A2:V2", rawValues: ["Water", "15th", "100"], period: "2026-06-01", contextKey: "georgia-home" },
+      { sourceWorkbook: "x", sourceSheet: "April 2026", sourceRow: 2, sourceRange: "A2:V2", rawValues: ["Water", "15th", "100"], period: "2026-04-01", contextKey: "georgia-home" },
       { sourceWorkbook: "x", sourceSheet: "September 2026", sourceRow: 2, sourceRange: "A2:V2", rawValues: ["Water & Trash", "18th", "120"], period: "2026-09-01", contextKey: "florida-home" },
     ]);
     expect(proposals).toHaveLength(2);

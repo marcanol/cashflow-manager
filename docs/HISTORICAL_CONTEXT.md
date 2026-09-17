@@ -12,11 +12,11 @@ Ignore source columns W onward.
 
 ### Prior context
 Georgia home
-Through June 2026
+Through April 2026
 
 ### Current context
 Florida home
-Starts July 2026
+Starts May 2026
 
 ## Relevance
 Current-context history should dominate prediction for:

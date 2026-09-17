@@ -16,6 +16,7 @@
 - Supabase Auth uses passwordless email links. Authentication alone does not grant access to household financial data.
 - `household_members` is the tenancy boundary; an authenticated user may access a row only when they belong to the owning household.
 - Launch begins with one approved `OWNER`. The authorization model remains membership-based and must support adding further `OWNER` or `MEMBER` users after go-live; application and database logic must not assume a permanently single-user household.
+- The initial live household has one enrolled `OWNER`; additional users are added later by creating an Auth identity and a separate `household_members` row, without schema or policy changes.
 - Every Checkpoint 0 table has RLS enabled and forced. Tables without a direct household foreign key authorize through their owning parent chain.
 - Browser and runtime server clients use only the Supabase publishable/anonymous key and authenticated session. Secret/service-role credentials are server-only and used solely by the explicit import script.
 - Checkpoint 0 application sessions are read-only: `anon` and `authenticated` grants are revoked, then only `SELECT` is granted back to authenticated users. Later write workflows require explicit per-operation grants and policies.
@@ -42,7 +43,7 @@
 - Cashflow Manager reserves `localhost:3001` for both local Next.js development and local production-mode verification because Attendly owns `localhost:3000`. The corresponding local Supabase Auth callback is `http://localhost:3001/auth/callback`.
 
 ## Context break
-- Current Florida-home financial context begins July 2026.
+- Current Florida-home financial context begins May 2026, reflecting the actual household move month.
 - Older Georgia home costs are not apple-to-apple for current home-cost forecasting.
 - Current-context observations should dominate forecasting for mortgage/utilities/property-related costs.
 - Older history may still be useful for portable obligations and behavioral analysis.

@@ -65,5 +65,5 @@ create table planned_allocations (
   paycheck_occurrence_id uuid references paycheck_occurrences(id) on delete set null, amount_cents bigint not null check (amount_cents > 0)
 );
 
--- Contexts deliberately establish the July 2026 financial break; source imports map by their period.
+-- Contexts deliberately establish the May 2026 financial break; source imports map by their period.
 -- Insert a household first, then use these values during environment-specific seed/import setup.
