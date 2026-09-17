@@ -1,7 +1,7 @@
 # Current State
 
 ## Status
-Checkpoint 0 foundation implementation is in place and locally validated. A non-destructive rehearsal has been completed against the real `bills.xlsx` retrieved from the user's Google Drive; the source workbook and rehearsal artifact remain outside Git. The selected passwordless-email, household-membership, and RLS security model is implemented. The repository now also has an atomic, source-SHA-idempotent import path and a database-backed September review view; live application of the newest migration, data loading, and allow/deny verification remain operational steps.
+Checkpoint 0 foundation implementation is in place and locally validated. The live Supabase project has the full schema/RLS baseline, atomic import migration, and the real historical workbook load. The source workbook, rehearsal artifact, and generated SQL payload remain outside Git. The live database matches the real-workbook rehearsal and the exact workbook replay returned the existing run without duplicating data. Passwordless authentication is configured for port 3001; first-member enrollment and the corresponding authenticated UI allow-path check remain the final operational gate.
 
 ## Locked inputs
 - `bills.xlsx` is the historical source.
@@ -28,6 +28,8 @@ Checkpoint 0 foundation implementation is in place and locally validated. A non-
 - Passwordless email sign-in, verified cookie-session refresh, same-origin callback redirects, authenticated server-side runtime reads, a `household_members` tenant boundary, and RLS policies covering every Checkpoint 0 table, including transitive import/proposal/allocation data.
 - Browser sessions are read-only at Checkpoint 0: anonymous grants are revoked and authenticated members receive only `SELECT`; imports use a server-only secret/service-role key.
 - Local Next.js development/start scripts are pinned to port 3001, and the application's required passwordless-auth callback is `http://localhost:3001/auth/callback`.
+- Live Supabase Auth uses `http://localhost:3001` as the Site URL and has exactly one redirect URL: `http://localhost:3001/auth/callback`; the obsolete port-3000 URL was removed.
+- The live atomic import function is deployed. The real workbook was loaded as one imported run with 1,073 raw rows and 729 review-required proposals; an exact replay returned the same import-run identity with `alreadyImported=true`.
 
 ## Validation
 - `npm test`: 22 tests passing.
@@ -37,7 +39,11 @@ Checkpoint 0 foundation implementation is in place and locally validated. A non-
 - Rehearsal retained 1,073 non-empty A:V source rows and created 729 independent review-required proposals; no identities were merged.
 - 923 raw rows map to the prior Georgia context and 150 map to the Florida context (July 2026 onward).
 - September 2026 contains 44 retained raw rows and 40 proposals across 38 distinct raw labels. Two repeated labels remain separate proposals, preserving duplicate planning-row evidence.
+- The live September rows match the rehearsal: 40 proposal items, 36 deterministically parsed amounts totaling $17,434.00, 4 unknown amounts, 28 known due dates, and 12 unknown due dates.
 - Source gaps are preserved rather than synthesized: there are no eligible sheets for December 2024–March 2025 or September 2025.
+- Live security verification: all 13 financial tables have RLS enabled and forced; 13 policies are present; anonymous table grants are zero; authenticated write grants are zero; anonymous/authenticated import execution is denied; and only `service_role` can execute the atomic importer.
+- Anonymous REST checks return HTTP 401 / PostgreSQL `42501` for both financial-table reads and importer execution.
+- With the live publishable configuration, Next.js starts on `127.0.0.1:3001`; `/`, `/login`, and the no-code callback path return successfully, and the unauthenticated UI requests sign-in without exposing financial data.
 
 ## Remaining live work
-Replace the live Supabase Auth allowlist's obsolete port-3000 callback with `http://localhost:3001/auth/callback`, apply `20260917120000_atomic_historical_import.sql` to the live project, bootstrap the first household member, load the external workbook through either the atomic service-role command or generated external SQL payload, and verify the September 2026 database/UI representation plus live allow/deny RLS behavior. The generated payload contains private financial data and must remain outside Git. The browser uses only the publishable/anonymous key; administrative credentials remain server-only.
+Enroll the first approved passwordless-auth user, add that Auth user to `household_members` as `OWNER`, then verify the authenticated RLS allow path and the Today/Plan rendering against the already-validated September expectations. The corresponding non-member/anonymous deny paths and all live database/import checks already pass. The browser uses only the publishable key; administrative credentials remain server-only.
