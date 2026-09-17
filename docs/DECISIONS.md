@@ -15,6 +15,7 @@
 ## Security and tenancy
 - Supabase Auth uses passwordless email links. Authentication alone does not grant access to household financial data.
 - `household_members` is the tenancy boundary; an authenticated user may access a row only when they belong to the owning household.
+- Launch begins with one approved `OWNER`. The authorization model remains membership-based and must support adding further `OWNER` or `MEMBER` users after go-live; application and database logic must not assume a permanently single-user household.
 - Every Checkpoint 0 table has RLS enabled and forced. Tables without a direct household foreign key authorize through their owning parent chain.
 - Browser and runtime server clients use only the Supabase publishable/anonymous key and authenticated session. Secret/service-role credentials are server-only and used solely by the explicit import script.
 - Checkpoint 0 application sessions are read-only: `anon` and `authenticated` grants are revoked, then only `SELECT` is granted back to authenticated users. Later write workflows require explicit per-operation grants and policies.
