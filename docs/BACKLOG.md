@@ -8,13 +8,13 @@
 - [x] Create raw spreadsheet import tables
 - [x] Implement month/year sheet selector
 - [x] Enforce W+ exclusion
-- [ ] Import latest ~24 months — blocked pending external `bills.xlsx`
+- [ ] Import latest ~24 months — real-workbook rehearsal passed; database persistence blocked by Supabase auth/RLS decision
 - [x] Create cautious normalization/proposal pass
-- [ ] Load September 2026 as validation month — blocked pending external `bills.xlsx` and Supabase project config
+- [ ] Load September 2026 as validation month — rehearsal passed; blocked by Supabase auth/RLS decision and project config
 - [x] Build minimal Today screen
 - [x] Build minimal Plan screen
 - [x] Create golden financial test fixtures
-- [ ] Validate spreadsheet vs app — blocked pending external `bills.xlsx`
+- [ ] Validate spreadsheet vs app — importer validated against the real workbook; database/UI comparison remains
 
 ## NEXT
 - [ ] Payment optimizer
