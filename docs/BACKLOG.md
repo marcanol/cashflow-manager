@@ -8,17 +8,17 @@
 - [x] Create raw spreadsheet import tables
 - [x] Implement month/year sheet selector
 - [x] Enforce W+ exclusion
-- [ ] Import latest ~24 months — real-workbook rehearsal passed; atomic/idempotent persistence path is complete, live load remains
+- [x] Import latest ~24 months — live load contains 1,073 raw rows and 729 review-required proposals; exact replay is idempotent
 - [x] Create cautious normalization/proposal pass
-- [ ] Load September 2026 as validation month — rehearsal and proposal-backed UI read path passed; live load remains
+- [x] Load September 2026 as validation month — live database matches the 44-row / 40-proposal rehearsal
 - [x] Build minimal Today screen
 - [x] Build minimal Plan screen
 - [x] Render pending historical proposals without promoting or merging identities
 - [x] Make historical import atomic and replay-safe by household + workbook SHA-256
 - [x] Create golden financial test fixtures
-- [ ] Validate spreadsheet vs app — importer and deterministic proposal rendering are validated; live database/UI comparison remains
+- [ ] Validate spreadsheet vs app — live database comparison passes; authenticated Today/Plan rendering awaits first-member enrollment
 - [x] Add passwordless authentication and household-scoped RLS
-- [ ] Configure Supabase Auth redirect URLs and bootstrap first household member — the application target is locked and locally verified at port 3001; the live redirect replacement and first member bootstrap remain
+- [ ] Configure Supabase Auth redirect URLs and bootstrap first household member — live port-3001 URLs are verified; first-member enrollment remains
 
 ## NEXT
 - [ ] Payment optimizer
