@@ -1,7 +1,7 @@
 # Current State
 
 ## Status
-Checkpoint 0 foundation implementation is in place and locally validated. A non-destructive rehearsal has been completed against the real `bills.xlsx` retrieved from the user's Google Drive; the source workbook and rehearsal artifact remain outside Git. Database loading is paused at the authentication/RLS security gate defined in `HUMAN_GATES.md`.
+Checkpoint 0 foundation implementation is in place and locally validated. A non-destructive rehearsal has been completed against the real `bills.xlsx` retrieved from the user's Google Drive; the source workbook and rehearsal artifact remain outside Git. The selected passwordless-email, household-membership, and RLS security model is implemented in migration and application code; live project configuration and data loading remain pending.
 
 ## Locked inputs
 - `bills.xlsx` is the historical source.
@@ -22,9 +22,11 @@ Checkpoint 0 foundation implementation is in place and locally validated. A non-
 - Workbook rehearsal importer plus a Supabase load command with month/year filtering (full or abbreviated month, two- or four-digit year), latest-24 selection, A:V extraction, immutable source coordinates, import-run lifecycle, and review-required proposals only.
 - Deterministic cent-based Safe-to-Spend and daily cash-event projection domain functions.
 - Golden unit fixtures cover financial arithmetic, context boundary, sheet selection, provenance, W+ exclusion, and no silent alias merging.
+- Passwordless email sign-in, verified cookie-session refresh, same-origin callback redirects, authenticated server-side runtime reads, a `household_members` tenant boundary, and RLS policies covering every Checkpoint 0 table, including transitive import/proposal/allocation data.
+- Browser sessions are read-only at Checkpoint 0: anonymous grants are revoked and authenticated members receive only `SELECT`; imports use a server-only secret/service-role key.
 
 ## Validation
-- `npm test`: 10 tests passing.
+- `npm test`: 15 tests passing.
 - `npm run build`: passing.
 - Real-workbook rehearsal selected 24 month/year sheets from May 2024 through September 2026, including abbreviated names such as `Sep 2026` and `June 25`.
 - Rehearsal retained 1,073 non-empty A:V source rows and created 729 independent review-required proposals; no identities were merged.
@@ -33,4 +35,4 @@ Checkpoint 0 foundation implementation is in place and locally validated. A non-
 - Source gaps are preserved rather than synthesized: there are no eligible sheets for December 2024–March 2025 or September 2025.
 
 ## Remaining gate
-Choose the Supabase access model before storing personal financial data. Recommended: Supabase Auth with passwordless email sign-in, a household-membership table, and RLS policies that restrict all household data to authenticated members. After that decision, create/configure the project, apply the migration and RLS, load the rehearsed workbook, and verify the September 2026 database/UI representation.
+No live Supabase project was created or configured. After a project exists, configure email magic-link auth and the allowed redirect URL, apply migrations, run live allow/deny RLS tests, create the initial `household_members` record through a controlled server/secret-key setup, load the rehearsed workbook, and verify the September 2026 database/UI representation. The browser uses only the publishable/anonymous key; administrative credentials remain server-only for the import script.

@@ -44,6 +44,8 @@ npm test
 
 The Supabase migration is in `supabase/migrations/`; `supabase/seed.sql` creates only a synthetic structural household and the Georgia/Florida context boundary. It contains no personal data.
 
+Copy `.env.example` to `.env.local` and populate it from the Supabase project Connect dialog. Never commit `.env.local` or any secret/service-role key. Browser code uses only the publishable key; the secret key is reserved for the explicit import command.
+
 To rehearse a real workbook import without placing it in Git:
 
 ```bash

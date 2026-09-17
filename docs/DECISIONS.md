@@ -12,6 +12,14 @@
 - Agents continue automatically through safe implementation and validation.
 - User is pulled in only for material decisions, destructive actions, auth/security, or meaningful ambiguity.
 
+## Security and tenancy
+- Supabase Auth uses passwordless email links. Authentication alone does not grant access to household financial data.
+- `household_members` is the tenancy boundary; an authenticated user may access a row only when they belong to the owning household.
+- Every Checkpoint 0 table has RLS enabled and forced. Tables without a direct household foreign key authorize through their owning parent chain.
+- Browser and runtime server clients use only the Supabase publishable/anonymous key and authenticated session. Secret/service-role credentials are server-only and used solely by the explicit import script.
+- Checkpoint 0 application sessions are read-only: `anon` and `authenticated` grants are revoked, then only `SELECT` is granted back to authenticated users. Later write workflows require explicit per-operation grants and policies.
+- Next.js Proxy refreshes and verifies cookie-backed sessions. Authentication callbacks accept only same-origin relative redirect paths.
+
 ## Historical data
 - Active historical import window: approximately the most recent 24 months only.
 - Spreadsheet month/year tabs are the historical source.
