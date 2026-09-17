@@ -7,14 +7,15 @@ import { importWorkbook } from "../lib/importer/workbook";
 const sourcePath = process.argv[2];
 if (!sourcePath) throw new Error("Usage: npm run import:supabase -- /absolute/path/to/bills.xlsx");
 const url = process.env.SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-if (!url || !serviceRoleKey) throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required; do not store them in Git.");
+const serviceRoleKey = process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
+if (!url || !serviceRoleKey) throw new Error("SUPABASE_URL and SUPABASE_SECRET_KEY (or legacy SUPABASE_SERVICE_ROLE_KEY) are required; do not store them in Git.");
 const client = createClient(url, serviceRoleKey, { auth: { persistSession: false } });
 const absolutePath = resolve(sourcePath);
 const contents = await readFile(absolutePath);
 const sourceSha256 = createHash("sha256").update(contents).digest("hex");
 const result = importWorkbook(absolutePath);
-const householdId = process.env.HOUSEHOLD_ID || null;
+const householdId = process.env.HOUSEHOLD_ID;
+if (!householdId) throw new Error("HOUSEHOLD_ID is required so every imported row has an authorized household owner.");
 
 const { data: run, error: runError } = await client.from("import_runs").insert({ household_id: householdId, source_workbook: basename(absolutePath), source_sha256: sourceSha256, status: "REHEARSAL" }).select("id").single();
 if (runError || !run) throw new Error(`Could not create import run: ${runError?.message}`);

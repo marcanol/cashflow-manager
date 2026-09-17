@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createSupabaseServerClient } from "../supabase/server";
 
 type OccurrenceRow = { id: string; period: string; expected_amount_cents: number | null; confirmed_amount_cents: number | null; due_date: string | null; obligations: { name: string }[] | null };
 type PaycheckRow = { expected_date: string; expected_amount_cents: number };
@@ -10,19 +10,15 @@ export type TodaySnapshot = {
   upcoming: { id: string; name: string; dueDate: string; amountCents: number }[];
 };
 
-function configuredClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  return url && key ? createClient(url, key, { auth: { persistSession: false } }) : null;
-}
-
 /**
- * Runtime data access is separated from UI. Checkpoint 0 intentionally returns an
- * explicit unavailable state until actual bank balances/imported data are configured.
+ * Runtime reads use the authenticated server session. Row-level security enforces
+ * household membership; no unauthenticated public read path exists here.
  */
 export async function getTodaySnapshotFromDatabase(asOf = "2026-09-01"): Promise<TodaySnapshot> {
-  const client = configuredClient();
+  const client = await createSupabaseServerClient();
   if (!client) return { state: "UNAVAILABLE", reason: "Supabase is not configured. No financial values are being guessed.", upcoming: [] };
+  const { data: { user }, error: userError } = await client.auth.getUser();
+  if (userError || !user) return { state: "UNAVAILABLE", reason: "Sign in with your approved household email to view cash-flow data.", upcoming: [] };
   const [{ data: occurrences, error: occurrenceError }, { data: paychecks, error: paycheckError }] = await Promise.all([
     client.from("obligation_occurrences").select("id,period,expected_amount_cents,confirmed_amount_cents,due_date,obligations(name)").gte("period", asOf).order("due_date", { ascending: true }).limit(8),
     client.from("paycheck_occurrences").select("expected_date,expected_amount_cents").gte("expected_date", asOf).order("expected_date", { ascending: true }).limit(1),
