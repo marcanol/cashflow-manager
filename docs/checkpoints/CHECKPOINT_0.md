@@ -10,7 +10,7 @@ Prove the application can understand the user's existing planning model before a
 4. Only month/year tabs from approximately the latest 24 months are considered.
 5. Columns W+ are ignored.
 6. Non-month tabs are excluded.
-7. July 2026 onward is tagged current Florida-home context.
+7. May 2026 onward is tagged current Florida-home context.
 8. Raw provenance is preserved.
 9. Normalization does not silently merge uncertain identities.
 10. September 2026 is represented in the database.

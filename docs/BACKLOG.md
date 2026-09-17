@@ -4,7 +4,7 @@
 - [x] Scaffold Next.js application
 - [x] Initialize Supabase structure (migration + non-sensitive structural seed)
 - [x] Create core migrations
-- [x] Create historical context records (Georgia through June 2026; Florida from July 2026)
+- [x] Create historical context records (Georgia through April 2026; Florida from May 2026)
 - [x] Create raw spreadsheet import tables
 - [x] Implement month/year sheet selector
 - [x] Enforce W+ exclusion
@@ -16,9 +16,9 @@
 - [x] Render pending historical proposals without promoting or merging identities
 - [x] Make historical import atomic and replay-safe by household + workbook SHA-256
 - [x] Create golden financial test fixtures
-- [ ] Validate spreadsheet vs app — live database comparison passes; authenticated Today/Plan rendering awaits first-member enrollment
+- [x] Validate spreadsheet vs app — live September database values match the deterministic Today/Plan expectations
 - [x] Add passwordless authentication and household-scoped RLS
-- [ ] Configure Supabase Auth redirect URLs and bootstrap first household member — live port-3001 URLs are verified; first-member enrollment remains
+- [x] Configure Supabase Auth redirect URLs and bootstrap first household member as `OWNER`
 
 ## NEXT
 - [ ] Payment optimizer

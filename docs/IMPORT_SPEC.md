@@ -61,5 +61,5 @@ Names like:
 may be proposed as aliases but not silently merged unless deterministic identity evidence exists.
 
 ## Current context
-Tag July 2026 onward as Florida/current-home context.
+Tag May 2026 onward as Florida/current-home context.
 Older imported data defaults to prior/Georgia context unless explicitly portable.

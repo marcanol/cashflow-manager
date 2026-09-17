@@ -15,8 +15,8 @@ describe("golden financial fixtures", () => {
     ]);
   });
   it("uses the locked Florida boundary", () => {
-    expect(contextForPeriod("2026-06-30")).toBe("georgia-home");
-    expect(contextForPeriod("2026-07-01")).toBe("florida-home");
+    expect(contextForPeriod("2026-04-30")).toBe("georgia-home");
+    expect(contextForPeriod("2026-05-01")).toBe("florida-home");
     expect(formatMoney(182_500)).toBe("$1,825.00");
   });
 });
