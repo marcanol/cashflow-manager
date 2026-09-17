@@ -12,8 +12,8 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
-    "import:workbook": "tsx scripts/import-workbook.ts",
-    "import:supabase": "tsx scripts/import-to-supabase.ts"
+    "import:workbook": "node --import tsx scripts/import-workbook.ts",
+    "import:supabase": "node --import tsx scripts/import-to-supabase.ts"
   },
   "repository": {
     "type": "git",

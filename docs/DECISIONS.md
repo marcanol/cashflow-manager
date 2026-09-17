@@ -17,7 +17,9 @@
 - Spreadsheet month/year tabs are the historical source.
 - Ignore columns W and later.
 - Ignore templates, Info, Money, and other non-month/year tabs.
+- Month/year recognition accepts full or abbreviated English month names and two- or four-digit years because the source uses all of these forms (for example, `September 2026`, `Sep 2026`, and `June 25`).
 - Preserve source rows/provenance even when normalized.
+- Omit fully empty formatted rows, but preserve each retained row's original worksheet row number and A:V source range.
 - Do not silently merge fuzzy aliases.
 - Checkpoint 0 imports are rehearsable without a database: the importer produces raw rows and review-required normalization proposals. With a configured Supabase service role it persists a tracked import run, raw provenance, and proposals; source files and credentials remain outside Git.
 
