@@ -18,7 +18,7 @@
 - [x] Create golden financial test fixtures
 - [ ] Validate spreadsheet vs app — importer and deterministic proposal rendering are validated; live database/UI comparison remains
 - [x] Add passwordless authentication and household-scoped RLS
-- [ ] Configure Supabase Auth redirect URLs and bootstrap first household member — local port-3001 callback configured; first member bootstrap remains
+- [ ] Configure Supabase Auth redirect URLs and bootstrap first household member — the application target is locked and locally verified at port 3001; the live redirect replacement and first member bootstrap remain
 
 ## NEXT
 - [ ] Payment optimizer

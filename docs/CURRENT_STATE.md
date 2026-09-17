@@ -27,7 +27,7 @@ Checkpoint 0 foundation implementation is in place and locally validated. A non-
 - Golden unit fixtures cover financial arithmetic, context boundary, sheet selection, provenance, W+ exclusion, no silent alias merging, conservative money/due-date parsing, and atomic import payload guarantees.
 - Passwordless email sign-in, verified cookie-session refresh, same-origin callback redirects, authenticated server-side runtime reads, a `household_members` tenant boundary, and RLS policies covering every Checkpoint 0 table, including transitive import/proposal/allocation data.
 - Browser sessions are read-only at Checkpoint 0: anonymous grants are revoked and authenticated members receive only `SELECT`; imports use a server-only secret/service-role key.
-- Local Next.js development/start scripts are pinned to port 3001, and the local passwordless-auth callback is `http://localhost:3001/auth/callback`.
+- Local Next.js development/start scripts are pinned to port 3001, and the application's required passwordless-auth callback is `http://localhost:3001/auth/callback`.
 
 ## Validation
 - `npm test`: 22 tests passing.
@@ -40,4 +40,4 @@ Checkpoint 0 foundation implementation is in place and locally validated. A non-
 - Source gaps are preserved rather than synthesized: there are no eligible sheets for December 2024–March 2025 or September 2025.
 
 ## Remaining live work
-Apply `20260917120000_atomic_historical_import.sql` to the live project, load the external workbook through either the atomic service-role command or generated external SQL payload, and verify the September 2026 database/UI representation plus live allow/deny RLS behavior. The generated payload contains private financial data and must remain outside Git. The browser uses only the publishable/anonymous key; administrative credentials remain server-only.
+Replace the live Supabase Auth allowlist's obsolete port-3000 callback with `http://localhost:3001/auth/callback`, apply `20260917120000_atomic_historical_import.sql` to the live project, bootstrap the first household member, load the external workbook through either the atomic service-role command or generated external SQL payload, and verify the September 2026 database/UI representation plus live allow/deny RLS behavior. The generated payload contains private financial data and must remain outside Git. The browser uses only the publishable/anonymous key; administrative credentials remain server-only.
