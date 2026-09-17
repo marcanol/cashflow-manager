@@ -14,6 +14,7 @@ Checkpoint 0 foundation implementation is in place and locally validated. The li
 - Wife: 15th and 30th → PNC.
 - Product should minimize human-in-the-loop work.
 - Initial UI should be Xero-simple and replaceable.
+- Launch begins with one approved household `OWNER`; additional household members may be added after go-live without changing the tenancy model.
 - Local Cashflow Manager development and production-mode verification use `http://localhost:3001`; Attendly retains port 3000.
 
 ## Implemented in Checkpoint 0

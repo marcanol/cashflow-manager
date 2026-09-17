@@ -31,4 +31,9 @@ describe("Checkpoint 0 tenant security schema", () => {
     expect(migration).toContain("household_members_user_id_idx");
     expect(migration).toContain("user_id = (select auth.uid())");
   });
+  it("supports multiple household users without a single-user constraint", () => {
+    expect(migration).toContain("primary key (household_id, user_id)");
+    expect(migration).toContain("check (role in ('OWNER', 'MEMBER'))");
+    expect(migration).not.toContain("unique (household_id)");
+  });
 });
