@@ -24,7 +24,8 @@ Build the deterministic forward-planning model on top of the validated Checkpoin
 - [x] Account-aware PNC/Chase events and household planning are supported.
 - [x] Today, Plan, and Settings/Budgets consume database-backed planning data.
 - [x] All new financial tables have forced RLS; budget writes are constrained to an owner-checked operation.
-- [ ] Live migration, private configuration load, and live owner/non-member RLS verification complete.
+- [x] Live generic migration applied; all eight new tables are present with forced RLS.
+- [ ] Private configuration load and live owner/non-member RLS verification complete.
 - [ ] Live Today/Plan verification complete with the loaded Checkpoint 1 configuration.
 
 ## Local validation evidence

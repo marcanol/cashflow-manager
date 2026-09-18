@@ -1,7 +1,7 @@
 # Current State
 
 ## Status
-Checkpoint 0 remains complete. Checkpoint 1 is implemented and validated locally, but is not yet complete in the live environment: the secure Supabase dashboard sign-in expired before the migration and private configuration load. No live Checkpoint 1 database changes were made. The repository contains only generic schema, deterministic logic, UI, tests, and import tooling; the completed worksheet and normalized household configuration remain outside Git.
+Checkpoint 0 remains complete. Checkpoint 1 is implemented and validated locally. The generic Checkpoint 1 migration is now applied to the live Supabase project, but the private household configuration, generated paychecks, and live application/RLS verification remain pending. The repository contains only generic schema, deterministic logic, UI, tests, and import tooling; the completed worksheet and normalized household configuration remain outside Git.
 
 ## Locked inputs
 - `bills.xlsx` is the historical source.
@@ -62,7 +62,9 @@ Checkpoint 0 remains complete. Checkpoint 1 is implemented and validated locally
 - `npx tsc --noEmit`: passing.
 - `npm run build`: passing.
 - Local port-3001 smoke test: `/`, `/plan`, `/settings/budgets`, and `/login` return HTTP 200.
-- Live deployment and live RLS/UI verification remain pending.
+- Live migration execution returned success. All eight new Checkpoint 1 tables are present with RLS enabled and forced.
+- The live household configuration is still empty: accounts, income sources, obligations, budgets, and reserves have not been loaded.
+- Live owner/non-member policy tests and Today/Plan verification remain pending.
 
 ## Next action
-Authenticate to the existing Supabase project, apply `20260918000000_checkpoint_1_planning.sql`, load the private normalized configuration, materialize September-November paycheck dates, and run live owner/non-member RLS plus Today/Plan verification. Then configure the still-unknown household inputs before treating live Safe-to-Spend as available.
+Recreate the private normalized configuration from the approved Florida worksheet, load it into the existing Supabase household, materialize September-November paycheck dates, and run live owner/non-member RLS plus Today/Plan verification. Then configure the still-unknown household inputs before treating live Safe-to-Spend as available.
