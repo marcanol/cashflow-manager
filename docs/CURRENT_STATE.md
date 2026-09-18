@@ -1,7 +1,7 @@
 # Current State
 
 ## Status
-Checkpoint 0 remains complete. Checkpoint 1 is implemented and validated locally. The generic Checkpoint 1 migration is now applied to the live Supabase project, but the private household configuration, generated paychecks, and live application/RLS verification remain pending. The repository contains only generic schema, deterministic logic, UI, tests, and import tooling; the completed worksheet and normalized household configuration remain outside Git.
+Checkpoint 0 remains complete. Checkpoint 1 is implemented, validated locally, and loaded in the live Supabase project. The generic migration, private household configuration, September-November paycheck occurrences, owner/non-member RLS checks, and database-backed Today/Plan input checks are complete. Safe-to-Spend intentionally remains partial until the user supplies the current account balances, safety buffer, expected net pay, and two missing budget allocations. The repository contains only generic schema, deterministic logic, UI, tests, and import tooling; the completed worksheet and normalized household configuration remain outside Git.
 
 ## Locked inputs
 - `bills.xlsx` is the historical source.
@@ -63,8 +63,11 @@ Checkpoint 0 remains complete. Checkpoint 1 is implemented and validated locally
 - `npm run build`: passing.
 - Local port-3001 smoke test: `/`, `/plan`, `/settings/budgets`, and `/login` return HTTP 200.
 - Live migration execution returned success. All eight new Checkpoint 1 tables are present with RLS enabled and forced.
-- The live household configuration is still empty: accounts, income sources, obligations, budgets, and reserves have not been loaded.
-- Live owner/non-member policy tests and Today/Plan verification remain pending.
+- Live private configuration load returned two accounts, two income sources, 26 obligations, 25 payment policies, three budgets, two Pool budget periods, and one household settings row. Twenty-five obligations are complete and one remains explicitly incomplete.
+- Live paycheck generation materialized 11 occurrences with zero invalid-calendar exceptions: Anamary has six Chase dates on the 15th/30th from September-November 2026, and Luis has five 14-day PNC dates from 2026-09-25 through 2026-11-20.
+- Live owner RLS validation exposes the loaded Checkpoint 1 rows. A simulated authenticated non-member receives zero rows across the household, membership, account, income, obligation, paycheck, settings, payment-policy, budget, balance, consumption, reserve, and reserve-movement paths.
+- Database-backed Today/Plan input validation for 2026-09-18 returns eight paychecks in the 60-day horizon, 48 obligation occurrences, one active budget period, and eight occurrence amounts still awaiting statement-confirmed forecasts.
+- Expected partial-state inputs remain explicit: zero account balance snapshots, a null safety buffer, 11 unknown paycheck amounts, and two active budgets without allocations. No missing value was converted to zero.
 
 ## Next action
-Recreate the private normalized configuration from the approved Florida worksheet, load it into the existing Supabase household, materialize September-November paycheck dates, and run live owner/non-member RLS plus Today/Plan verification. Then configure the still-unknown household inputs before treating live Safe-to-Spend as available.
+Collect and configure the current PNC and Chase available balances, household safety buffer, Luis and Anamary expected net paycheck amounts, and monthly Home Food and Spending Allowance allocations. Then add statement-confirmed forecasts for the eight unresolved occurrence amounts before treating live Safe-to-Spend as available.

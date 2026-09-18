@@ -25,8 +25,8 @@ Build the deterministic forward-planning model on top of the validated Checkpoin
 - [x] Today, Plan, and Settings/Budgets consume database-backed planning data.
 - [x] All new financial tables have forced RLS; budget writes are constrained to an owner-checked operation.
 - [x] Live generic migration applied; all eight new tables are present with forced RLS.
-- [ ] Private configuration load and live owner/non-member RLS verification complete.
-- [ ] Live Today/Plan verification complete with the loaded Checkpoint 1 configuration.
+- [x] Private configuration load and live owner/non-member RLS verification complete.
+- [x] Live Today/Plan verification complete with the loaded Checkpoint 1 configuration.
 
 ## Local validation evidence
 - `npm test`: 36 tests passing.
@@ -34,6 +34,10 @@ Build the deterministic forward-planning model on top of the validated Checkpoin
 - `npm run build`: passing.
 - Development startup on `127.0.0.1:3001`: `/`, `/plan`, `/settings/budgets`, and `/login` return HTTP 200.
 - Private worksheet normalization: 61 reviewed source rows, 30 in-scope Florida rows after V2 deferrals, 26 canonical obligations, three budgets, and two deferred debt items. The private JSON remains outside Git.
+- Live configuration: two accounts, two income sources, 26 obligations, 25 payment policies, three budgets, and 48 obligation occurrences.
+- Live paycheck generation: 11 September-November occurrences, with six Anamary/Chase dates and five Luis/PNC dates; zero invalid-calendar exceptions.
+- Live RLS: the owner sees the loaded household data while a simulated authenticated non-member sees zero rows across all Checkpoint 1 read paths.
+- Live Today/Plan inputs on 2026-09-18: eight paychecks in the 60-day horizon, 48 obligation occurrences, one active budget period, and eight unresolved occurrence amounts. Safe-to-Spend remains partial because the required user inputs below are still unknown.
 
 ## Known unconfigured household inputs
 - Current PNC and Chase available balances.

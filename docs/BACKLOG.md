@@ -32,8 +32,8 @@
 - [x] Add minimal Today, Plan, and Settings/Budgets flows
 - [x] Add forced RLS and owner-only budget write operation
 - [x] Apply Checkpoint 1 migration to live Supabase
-- [ ] Load private household configuration and materialize live paychecks
-- [ ] Verify live owner/non-member RLS and database-backed Today/Plan output
+- [x] Load private household configuration and materialize live paychecks
+- [x] Verify live owner/non-member RLS and database-backed Today/Plan output
 - [ ] Configure current PNC/Chase balances, safety buffer, expected net paycheck amounts, and missing budget allocations
 
 ## NEXT
