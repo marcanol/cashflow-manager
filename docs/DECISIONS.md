@@ -50,8 +50,10 @@
 
 ## Income
 - Only post-tax / deposited cash is modeled.
-- Luis: paid every 2 weeks on Friday into Chase.
-- Wife: paid on the 15th and 30th into PNC.
+- Luis: paid exactly every 14 days on Friday into PNC, anchored to the confirmed 2026-09-25 payday.
+- Anamary: paid semi-monthly on the 15th and 30th into Chase.
+- Income recurrence configuration is persisted in the database. UI and domain services do not own household schedule constants.
+- Anamary's invalid-30th calendar-edge behavior is intentionally unresolved and configurable. Valid 15th/30th dates are generated; an invalid date is surfaced rather than silently moved.
 - Income schedule is predictable; bank deposits confirm actual amount.
 - Internal Chase/PNC transfers are not income.
 
@@ -64,6 +66,22 @@
 - Planned late fees must be explicit and included in optimization.
 - Track planned and unplanned late fees separately.
 - Track monthly total late fees.
+- Autopay obligations are forecast and protected before posting, but are excluded from payment-timing optimization and modeled late fees.
+- Manual obligations are deterministic optimizer candidates. Initial actions are `PAY`, `RESERVE`, and `HOLD`.
+- A reconciled obligation and its released reserve must not remain in Safe-to-Spend deductions.
+
+## Budgets
+- Budgets are household-scoped, database-driven entities with active state, cadence, configured allocation, and generated periods.
+- Initial budget definitions are Home Food, Spending Allowance, and Pool. Pool is a spending budget rather than a recurring merchant bill.
+- Reviewed transactions may be allocated only to an existing active budget. A missing budget must be created before allocation; the allocation action never creates a free-text category.
+- Budget consumption uses separate allocation rows so one future bank transaction can be split across multiple budgets.
+- Remaining active budget allocation is protected money and reduces Safe-to-Spend.
+
+## Obligation identity and reconciliation
+- Amount is never an obligation identity key. Account, approved merchant/description rules, active context/period, and known canonical identity are primary signals.
+- Variable actual amounts remain attached to one canonical obligation. Expected forecast amount and actual posted amount are separate facts.
+- Explicit worksheet rename history becomes dated aliases; unrelated obligations are never fuzzy-merged.
+- A user-confirmed merchant collision may use a broad amount band only as a secondary discriminator, never as an exact-match identity rule.
 
 ## Reconciliation
 - Rules remember; AI suggests.

@@ -14,7 +14,10 @@
     "test:watch": "vitest",
     "import:workbook": "node --import tsx scripts/import-workbook.ts",
     "import:supabase": "node --import tsx scripts/import-to-supabase.ts",
-    "import:sql": "node --import tsx scripts/generate-import-sql.ts"
+    "import:sql": "node --import tsx scripts/generate-import-sql.ts",
+    "config:checkpoint1": "node --import tsx scripts/apply-checkpoint1-config.ts",
+    "config:sql": "node --import tsx scripts/generate-checkpoint1-sql.ts",
+    "config:normalize": "node --import tsx scripts/normalize-florida-worksheet.ts"
   },
   "repository": {
     "type": "git",

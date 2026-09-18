@@ -69,3 +69,27 @@ HOUSEHOLD_ID=... npm run import:sql -- /absolute/path/to/bills.xlsx /tmp/bills.i
 ```
 
 Running either payload again for the same household and exact workbook SHA-256 returns the existing completed import rather than duplicating rows. Any error rolls the entire import back; proposals remain independent and `REVIEW_REQUIRED`.
+
+## Checkpoint 1 private household configuration
+
+The Checkpoint 1 migration is generic. Real obligations, aliases, amounts, budgets, and account configuration must remain outside Git.
+
+Normalize the approved private worksheet to an ignored location:
+
+```bash
+npm run config:normalize -- /absolute/path/to/florida_expense_bank_match.xlsx /tmp/cashflow-checkpoint1-private-config.json
+```
+
+After applying the Checkpoint 1 migration, load the private configuration with a server-only key:
+
+```bash
+SUPABASE_URL=... SUPABASE_SECRET_KEY=... HOUSEHOLD_ID=... npm run config:checkpoint1 -- /tmp/cashflow-checkpoint1-private-config.json
+```
+
+If direct credentials are unavailable, generate a private SQL Editor payload outside the repository:
+
+```bash
+HOUSEHOLD_ID=... npm run config:sql -- /tmp/cashflow-checkpoint1-private-config.json /tmp/checkpoint1.import.sql
+```
+
+Delete temporary private configuration and SQL payloads after the live load is verified. Never commit them.

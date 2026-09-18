@@ -29,7 +29,10 @@ Fields:
 - id
 - household_id
 - person_label
-- cadence
+- legacy cadence label
+- recurrence type (`INTERVAL_DAYS` or `MONTH_DAYS`)
+- interval days and confirmed anchor date, or days-of-month rules
+- configurable date-adjustment policy
 - destination_account_id
 - expected_net_amount
 - tolerance
@@ -56,12 +59,18 @@ Canonical bill/debt/one-time identity.
 - paid_from_account_id
 - active
 - portable_across_contexts
+- canonical key
+- amount behavior (`FIXED`, `VARIABLE`, `UNKNOWN`)
+- configuration status (`COMPLETE`, `INCOMPLETE`, `DEFERRED`)
 
 ## obligation_aliases
 - obligation_id
 - alias_type
 - alias_value
 - source
+- effective dates
+- optional matching account
+- optional broad amount band used only as a secondary discriminator
 
 ## obligation_occurrences
 Monthly/one-time instance.
@@ -87,6 +96,11 @@ Monthly/one-time instance.
 - reporting_risk_date
 - shutoff_risk_date
 - minimum_liquidity_priority
+- payment mode (`AUTOPAY` or `MANUAL`)
+- due rule and raw user-confirmed due text
+- last-safe rule and raw user-confirmed text
+- structured fixed/percentage/minimum/maximum late-fee components
+- optimizer enabled flag
 
 ## planned_allocations
 Maps paycheck/reserve funding to obligations.
@@ -111,11 +125,27 @@ Maps paycheck/reserve funding to obligations.
 - related_paycheck_occurrence_id
 - occurred_on
 
+Reserve movement direction is `FUND` or `RELEASE`. Physical movements may identify from/to accounts; virtual movements protect cash without changing household bank cash.
+
 ## budgets
-Examples: food, spending allowance.
+- household-scoped definition
+- stable budget key and display name
+- active state
+- cadence
+- configured allocation amount
+- optional funding account
 
 ## budget_periods
-Pay-cycle scoped allocations and consumption.
+Generated period with start/end dates and allocation amount.
+
+## budget_consumptions
+Transaction-to-budget allocations. Separate rows allow a future transaction to be split across multiple existing active budgets. Consumption reduces the owning period's remaining amount.
+
+## account_balance_snapshots
+Manual or future bank-feed available/ledger balances and pending transaction totals by account and timestamp.
+
+## household_financial_settings
+Household-level deterministic planning settings, beginning with the safety buffer.
 
 ## bank_transactions
 Plaid-derived actual activity.

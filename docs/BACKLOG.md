@@ -1,6 +1,6 @@
 # Backlog
 
-## NOW — Checkpoint 0
+## COMPLETE — Checkpoint 0
 - [x] Scaffold Next.js application
 - [x] Initialize Supabase structure (migration + non-sensitive structural seed)
 - [x] Create core migrations
@@ -20,10 +20,23 @@
 - [x] Add passwordless authentication and household-scoped RLS
 - [x] Configure Supabase Auth redirect URLs and bootstrap first household member as `OWNER`
 
+## NOW — Checkpoint 1
+- [x] Correct income account destinations and persist recurrence configuration
+- [x] Generate deterministic Luis and Anamary paycheck dates
+- [x] Normalize the approved Florida worksheet into a private, ignored configuration artifact
+- [x] Build canonical obligation, alias, amount-behavior, and payment-policy foundation
+- [x] Build first-class budgets, periods, and split-ready consumption model
+- [x] Model virtual and physical reserve movements
+- [x] Implement account-aware deterministic Safe-to-Spend without reserve double-counting
+- [x] Implement first-pass `PAY`, `RESERVE`, and `HOLD` recommendations
+- [x] Add minimal Today, Plan, and Settings/Budgets flows
+- [x] Add forced RLS and owner-only budget write operation
+- [ ] Apply Checkpoint 1 migration to live Supabase
+- [ ] Load private household configuration and materialize live paychecks
+- [ ] Verify live owner/non-member RLS and database-backed Today/Plan output
+- [ ] Configure current PNC/Chase balances, safety buffer, expected net paycheck amounts, and missing budget allocations
+
 ## NEXT
-- [ ] Payment optimizer
-- [ ] Reserve movement model
-- [ ] Safe-to-Spend engine
 - [ ] Plaid integration
 - [ ] Bank reconciliation
 - [ ] Gmail statements
@@ -34,3 +47,5 @@
 - [ ] GPT natural-language interface
 - [ ] reserve-fund optimization
 - [ ] Figma / Claude Design UI replacement
+- [ ] Debt-account subsystem for Anthony Loan, Mom, and Mom Home Depot, including recurring payments and remaining principal/balance
+- [ ] Resolve Anamary's February/invalid-30th payroll adjustment policy before that calendar edge is forecast

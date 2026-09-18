@@ -5,6 +5,8 @@ node_modules/
 *.log
 *.xlsx
 *.import.sql
+*.private.json
+upload/
 .DS_Store
 coverage/
 dist/

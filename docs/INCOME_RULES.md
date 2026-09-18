@@ -1,19 +1,21 @@
 # Income Rules
 
 ## Luis
-- cadence: every 2 weeks
+- cadence: exactly every 14 days
 - weekday: Friday
-- destination: Chase
+- confirmed schedule anchor: 2026-09-25
+- destination: PNC
 - amount: expected NET deposited amount
 - generation: forward from a known confirmed payday
 - actual confirmation: bank transaction
 
-## Wife
+## Anamary
 - cadence: semi-monthly
 - days: 15th and 30th
-- destination: PNC
+- destination: Chase
 - amount: expected NET deposited amount
 - actual confirmation: bank transaction
+- invalid-30th policy: configurable and currently unresolved; do not silently substitute a February date
 
 ## General
 Gross salary and payroll deductions are intentionally excluded.
@@ -24,3 +26,5 @@ If actual deposit differs from expected by tolerance:
 - recalculate forecast.
 
 Paycheck occurrences are cash-flow events, not merely monthly income totals.
+
+Schedule fields, destination accounts, expected net amounts, tolerances, active state, and date-adjustment policy are persisted. UI and domain functions consume this configuration rather than hardcoding household schedules.

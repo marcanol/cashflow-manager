@@ -1,7 +1,7 @@
 # Current State
 
 ## Status
-Checkpoint 0 is complete. The live Supabase project has the full schema/RLS baseline, atomic import migration, corrected May 2026 Florida boundary, and the real historical workbook load. The source workbook, rehearsal artifact, and generated SQL payload remain outside Git. The live database matches the real-workbook rehearsal and the exact workbook replay returned the existing run without duplicating data. Passwordless authentication is configured for port 3001; the launch owner exists in Supabase Auth, has an `OWNER` household membership, and the authenticated owner/non-member RLS paths have been validated live.
+Checkpoint 0 remains complete. Checkpoint 1 is implemented and validated locally, but is not yet complete in the live environment: the secure Supabase dashboard sign-in expired before the migration and private configuration load. No live Checkpoint 1 database changes were made. The repository contains only generic schema, deterministic logic, UI, tests, and import tooling; the completed worksheet and normalized household configuration remain outside Git.
 
 ## Locked inputs
 - `bills.xlsx` is the historical source.
@@ -10,8 +10,8 @@ Checkpoint 0 is complete. The live Supabase project has the full schema/RLS base
 - Active history target is approximately 24 months.
 - Florida/current-home context begins May 2026.
 - Net deposited income only.
-- Luis: biweekly Friday → Chase.
-- Wife: 15th and 30th → PNC.
+- Luis: exactly every 14 days from 2026-09-25 → PNC.
+- Anamary: 15th and 30th → Chase; invalid-30th adjustment remains unresolved/configurable.
 - Product should minimize human-in-the-loop work.
 - Initial UI should be Xero-simple and replaceable.
 - Launch begins with one approved household `OWNER`; additional household members may be added after go-live without changing the tenancy model.
@@ -47,5 +47,22 @@ Checkpoint 0 is complete. The live Supabase project has the full schema/RLS base
 - The launch Auth user is linked to the household as `OWNER`. Live policy validation returns all 1,073 raw rows and 729 proposals for that owner, while an authenticated non-member receives zero household, membership, raw-row, or proposal records.
 - With the live publishable configuration, Next.js starts on `127.0.0.1:3001`; `/`, `/login`, and the no-code callback path return successfully, and the unauthenticated UI requests sign-in without exposing financial data.
 
-## Next checkpoint
-Begin the payment optimizer and reserve-movement model on top of the validated historical model. A normal end-user magic-link smoke test should be repeated when a deployable application URL replaces the local-only callback; this does not block the completed Checkpoint 0 data, security, or deterministic-rendering foundation.
+## Implemented locally for Checkpoint 1
+- Database-driven income recurrence configuration and persisted paycheck occurrence generation.
+- Payment policies separating autopay protection from manual optimizer timing.
+- First-class budgets, periods, split-ready consumption allocations, and owner-only create/edit/deactivate operation.
+- Virtual/physical reserves and obligation-linked reserve movements.
+- Account balance snapshots, account-aware event planning, deterministic Safe-to-Spend, and deterministic `PAY`/`RESERVE`/`HOLD` recommendations.
+- Minimal database-backed Today, Plan, and Settings/Budgets routes.
+- Generic atomic private-configuration loader and SQL generator. No real household configuration is committed.
+- Approved worksheet normalized privately into 26 canonical obligations and three budgets after explicit aliases and V2 deferrals; unknown financial inputs remain null.
+
+## Checkpoint 1 validation
+- `npm test`: 36 tests passing.
+- `npx tsc --noEmit`: passing.
+- `npm run build`: passing.
+- Local port-3001 smoke test: `/`, `/plan`, `/settings/budgets`, and `/login` return HTTP 200.
+- Live deployment and live RLS/UI verification remain pending.
+
+## Next action
+Authenticate to the existing Supabase project, apply `20260918000000_checkpoint_1_planning.sql`, load the private normalized configuration, materialize September-November paycheck dates, and run live owner/non-member RLS plus Today/Plan verification. Then configure the still-unknown household inputs before treating live Safe-to-Spend as available.

@@ -1,6 +1,6 @@
 {
   "project": "household-cashflow-app",
-  "stage": "checkpoint-0",
+  "stage": "checkpoint-1",
   "ui_style": "minimal-xero-like",
   "history": {
     "window_months": 24,
@@ -10,8 +10,8 @@
   },
   "income": {
     "gross_income_modeled": false,
-    "luis": {"cadence": "biweekly", "weekday": "Friday", "destination": "Chase", "basis": "net_deposit"},
-    "wife": {"cadence": "semi-monthly", "days": [15, 30], "destination": "PNC", "basis": "net_deposit"}
+    "luis": {"cadence": "every_14_days", "weekday": "Friday", "anchor": "2026-09-25", "destination": "PNC", "basis": "net_deposit"},
+    "anamary": {"cadence": "semi-monthly", "days": [15, 30], "date_adjustment_policy": null, "destination": "Chase", "basis": "net_deposit"}
   },
   "agent_policy": {
     "minimize_human_in_loop": true,
